@@ -1,10 +1,6 @@
 #!/usr/bin/env
 
-TOKENS = ["REEL", "OPERATEUR", "FONCTION", "ERREUR", "FIN", "PAR_OUVR", "PAR_FERM", "VARIABLE", "NO_TOKEN"]
-FONCTION = ["sin", "cos", "tan", "abs", "log", "exp","sqrt","entier","val_neg","sinc"]
-OPERATION = ["+","-","*","/","^"]
-
-expression = "(3x+5)+exp(2)"
+from constant import FONCTION, OPERATION, PRECEDENCE
 
 def check_fonction(string): 
     if(string in FONCTION):
@@ -29,6 +25,7 @@ def check_reel(string):
     else : return False
 
 def parse(expression):
+    expression = expression.replace(" ","")
     expression = expression.lower()
     result = []
     temp = ""
@@ -36,35 +33,61 @@ def parse(expression):
     for i in expression:
         if(i not in OPERATION and i != '(' and i !=')' and i != 'x'):
             temp += i
-            print(temp)
         elif(i=='x' and check_reel(temp)==False):
             temp += i
         else:
             if check_fonction(temp):
-                result.append(("FONCTION", temp))
+                result.append(temp)
                 temp = ""
             
             if(check_reel(temp) and temp!=""):
-                result.append(("REEL",float(temp)))
+                result.append(temp)
                 temp = ""
                 
             if i in OPERATION:
-                result.append(("OPERATEUR",i))
+                result.append(i)
                 temp=""
 
             if i == '(':
-                result.append(("PAR_OUVR"))
+                result.append("(")
                 temp=""
 
             if i == ')':
-                result.append("PAR_FERM")
+                result.append(")")
                 temp=""
 
             if (i == 'x' and temp == ""):
-                result.append("VARIABLE")
+                result.append("x")
                 temp=""
 
-    print(result)
+    if(check_reel(temp) and temp!=""):
+        result.append(temp)
+    #print(result)
     return result
 
-parse(expression)
+def toPostfix(expression):
+    output = []
+    operator = []
+    for x in expression:
+        if x == '(':
+            operator.append(x)
+        elif x == ')':
+            while operator[-1]!='(':
+                output.append(operator.pop())
+            operator.pop()
+
+        elif x not in OPERATION and x not in FONCTION : 
+            output.append(x)
+        elif x in OPERATION or x in FONCTION:
+            if not operator or PRECEDENCE[x] > PRECEDENCE[operator[-1]] :
+                operator.append(x)
+            else : 
+                while PRECEDENCE[operator[-1]] >= PRECEDENCE[x] and operator[-1] != '(' and operator[-1] != ')':
+                    output.append(operator.pop())
+                operator.append(x)
+
+        #print(f'Output {output}')
+        #print(f'Operator {operator}')
+    while operator :
+        output.append(operator.pop())
+    return output
