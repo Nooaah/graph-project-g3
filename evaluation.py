@@ -1,4 +1,5 @@
-from constant import correspondance
+import constant
+import numpy as np
 
 def eval(tree, x):
 
@@ -20,17 +21,13 @@ def eval(tree, x):
             right = eval(tree.rightChild, x)
         
         if right:
-            return correspondance[tree.value](float(left), float(right))
+            return constant.correspondance[tree.value](float(left), float(right))
 
         else : 
-            return correspondance[f"{tree.value}"](float(left))
-'''
-expression = "(3*x+5)+exp(2)"
+            return constant.correspondance[f"{tree.value}"](float(left))
 
-par = parser.parse(expression)
-print(par)
-pst = parser.toPostfix(par)
-print(pst)
-tree = tree.makeTree(parser.toPostfix(parser.parse(expression)))
-print(eval(tree, 2))
-'''
+def calcCoordinates(t, tree):
+    y = np.zeros(len(t))
+    for i in range(len(t)):
+        y[i] = eval(tree, i)
+    return y
