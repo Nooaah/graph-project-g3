@@ -6,14 +6,16 @@
 ## Installation
 
 
-```python
-
+```bash
+pip3 install matplotlib
+pip3 install numpy
+pip3 install constant
 ```
 
 ## Usage
 
-```python
-
+```bash
+python3 tkinterFen.py
 ```
 
 ## Contributing
