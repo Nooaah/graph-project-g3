@@ -20,11 +20,11 @@ def _quit():
                     # Fatal Python Error: PyEval_RestoreThread: NULL tstate
 
 def calc(entry, t):
-    ```
+    '''
     expTree = tree.makeTree(parser.toPostfix(parser.parse(entry)))
     
     evaluation.calcCoordinates(t, expTree)
-    ```
+    '''
 
 def saveGraph():
     fig.savefig("backups/test" + str(datetime.datetime.now()) + ".png")
