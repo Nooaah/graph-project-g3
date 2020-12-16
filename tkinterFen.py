@@ -23,15 +23,15 @@ def calc(figure, entry):
     t = np.arange(-100, 100, 0.01)
     a = []
     exp = '('+entry.get()+')'
-    print(exp)
+    #print(exp)
     exp = parser.parse(exp)
     exp = parser.toPostfix(exp)
     exp = tree.makeTree(exp)
-    print(t)
+    #print(t)
     for i in range(len(t)): 
         #print(evaluation.eval(exp, t[i]))
         a.append(evaluation.eval(exp, t[i]))
-    print(a)
+    #print(a)
     figure.clear()
     figure.add_subplot(111).plot(t,a)
     figure.canvas.draw_idle()
